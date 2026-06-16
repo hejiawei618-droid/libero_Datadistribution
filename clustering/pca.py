@@ -27,18 +27,38 @@ DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "libero", "datasets", "
 OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "pca")
 PCA_N_COMPONENTS = 10
 
+# 数据过滤 (与 main.py CONFIG 保持一致)
+TASK_FILTER = None          # "milk" / "butter" / None=全部
+ACTION_DIRECTION = None     # "left" / "right" / None=全部
+TEMPORAL_RATIO = None       # (0.0, 0.3) / None=全部帧
+VISION_ENCODER = None       # "vit_small" / "resnet101" / None
+VISION_CAMERAS = ["agentview"]  # ["agentview", "eye_in_hand"]
+
 
 def main():
     data_dir = os.path.abspath(DATA_DIR)
     output_dir = os.path.abspath(OUTPUT_DIR)
     os.makedirs(output_dir, exist_ok=True)
 
+    parts = [f"task={TASK_FILTER or 'ALL'}", f"action_dir={ACTION_DIRECTION or 'ALL'}"]
+    if TEMPORAL_RATIO:
+        parts.append(f"phase={TEMPORAL_RATIO[0]*100:.0f}%-{TEMPORAL_RATIO[1]*100:.0f}%")
+    if VISION_ENCODER:
+        parts.append(f"vision={VISION_ENCODER}+{VISION_CAMERAS}")
+    desc = ", ".join(parts)
     print("=" * 60)
-    print("LIBERO_OBJECT: Step 1 (提取数据) + Step 2 (PCA 降维)")
+    print(f"LIBERO_OBJECT: Step 1 + Step 2  ({desc})")
     print("=" * 60)
 
-    # Step 1: 提取数据
-    states, actions = extract_states_and_actions(data_dir)
+    # Step 1: 提取数据 (支持过滤 + 视觉编码)
+    states, actions = extract_states_and_actions(
+        data_dir,
+        task_name=TASK_FILTER,
+        action_direction=ACTION_DIRECTION,
+        temporal_ratio=TEMPORAL_RATIO,
+        vision_encoder=VISION_ENCODER,
+        vision_cameras=VISION_CAMERAS,
+    )
 
     # Step 2: PCA 降维
     states_pca, pca = reduce_states_pca(states, n_components=PCA_N_COMPONENTS)

@@ -19,7 +19,7 @@ from knn.step3_knn import build_knn_index, save_knn
 # ============================================================
 STATES_PCA_PATH = os.path.join(os.path.dirname(__file__), "pca", "states_pca.npy")
 OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "knn")
-N_NEIGHBORS = 300
+N_NEIGHBORS = 1000  # 可在 run_all.py 中统一修改
 
 
 def main():

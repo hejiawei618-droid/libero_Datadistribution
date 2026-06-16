@@ -15,13 +15,13 @@ import numpy as np
 from sklearn.neighbors import NearestNeighbors
 
 
-def build_knn_index(states_pca: np.ndarray, n_neighbors: int = 300, metric: str = "euclidean", verbose: bool = True):
+def build_knn_index(states_pca: np.ndarray, n_neighbors: int = 1000, metric: str = "euclidean", verbose: bool = True):
     """
     在 PCA 降维后的 states 上建立 kNN 索引
 
     Args:
         states_pca: (N, D) PCA 降维后的 state 特征, 例如 (66451, 10)
-        n_neighbors: k, 邻域大小
+        n_neighbors: k, 邻域大小, 默认 1000
         metric: 距离度量, 默认 "euclidean"
         verbose: 是否打印信息
 
