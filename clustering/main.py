@@ -30,7 +30,7 @@ LIBERO_OBJECT 完整聚类分析流程 — 一键运行 Step 1 ~ Step 8
         ↓ Step 7: GMM(K=1~MAX_K) + BIC 选峰
         ↓ Step 8: 统计 K* 分布
     all_best_k.npy, kstar_summary.json
-    1111222
+    111122233
 ======================================================================
 """
 
